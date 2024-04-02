@@ -8,20 +8,24 @@ import { gmailLogo } from '../constants/constant.js';
 
 
 const StyledAppBar = styled(AppBar)({
-  background: "#f5f5f5",
-  boxShadow: 'none'
+  // background: "#f5f5f5",
+  background: "red",
+  boxShadow: 'none',
+  overflow: 'hidden'
+  
 })
 
 const SearchWrapper = styled(Box)`
    background: #eaf1fb;
    margin-left : 80px;
    border-radius : 8px;
-   min-width: 650px;
+   width: 100%;
    max-width: 720px;
    height:48px;
    display: flex;
    align-items: center;
    justify-content: space-between;
+   overflow: hidden;
    padding: 0 20px;
     & > div {
         width: 100%
