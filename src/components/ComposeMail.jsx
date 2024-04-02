@@ -1,7 +1,10 @@
+// Importing useState hook from React
 import { useState } from 'react';
+// Importing components and icons from Material-UI
 import { Dialog, styled, Typography, Box, InputBase, TextField, Button } from '@mui/material';
 import { Close, DeleteOutline } from '@mui/icons-material';
 
+// Styling for the dialog component
 const dialogStyle = {
   height: '90%',
   width: '80%',
@@ -11,7 +14,7 @@ const dialogStyle = {
   borderRadius: '10px 10px 0 0',
 };
 
-// using style
+// Styling for the header section using styled component
 const Header = styled(Box)`
   display: flex;
   justify-content: space-between;
@@ -23,6 +26,7 @@ const Header = styled(Box)`
   }
 `;
 
+// Styling for the recipient section using styled component
 const RecipientWrapper = styled(Box)`
   display: flex;
   flex-direction: column;
@@ -34,6 +38,7 @@ const RecipientWrapper = styled(Box)`
   }
 `;
 
+// Styling for the footer section using styled component
 const Footer = styled(Box)`
   display: flex;
   justify-content: space-between;
@@ -41,6 +46,7 @@ const Footer = styled(Box)`
   align-items: center;
 `;
 
+// Styling for the send button using styled component
 const SendButton = styled(Button)`
   background: #0b57d0;
   color: #fff;
@@ -50,26 +56,31 @@ const SendButton = styled(Button)`
   width: 100px;
 `;
 
+// ComposeMail component definition
 const ComposeMail = ({ openDialog, setOpenDialog }) => {
+  // State to manage form data
   const [data, setData] = useState({});
 
+  // Configuration for email sending
   const config = {
     Host: 'smtp25.elasticemail.com',
-    Username: 'ak6651641@gmail.com',
-    Password: '9753E2C9063D2BDB5E335775ED8CA8AF1A92',
+    Username: process.env.REACT_APP_USERNAME,
+    Password: process.env.REACT_APP_PASSWORD,
     Port: 587,
   };
 
-  const onValueChange = (e)=>{
-    setData({ ...data, [e.target.name]: e.target.value})
-  }
-  console.log(data);
+  // Function to handle input value change
+  const onValueChange = (e) => {
+    setData({ ...data, [e.target.name]: e.target.value });
+  };
 
+  // Function to close the compose mail dialog
   const closeComposeMail = (e) => {
     e.preventDefault();
     setOpenDialog(false);
   };
 
+  // Function to send the composed email
   const sendMail = (e) => {
     e.preventDefault();
     if (window.Email) {
@@ -84,19 +95,29 @@ const ComposeMail = ({ openDialog, setOpenDialog }) => {
     setOpenDialog(false);
   };
 
+  // Rendering the ComposeMail component
   return (
     <Dialog open={openDialog} PaperProps={{ sx: dialogStyle }}>
+      {/* Header section */}
       <Header>
-        {/* header part */}
         <Typography>New Message</Typography>
         <Close fontSize="small" onClick={(e) => closeComposeMail(e)} />
       </Header>
+      {/* Recipient and subject section */}
       <RecipientWrapper>
-        <InputBase placeholder="Recipients" name="to" onChange={(e) => onValueChange(e)} value={data.to}/>
-        <InputBase placeholder="Subject" name="subject"  onChange={(e) => onValueChange(e)} value={data.subject} />
+        <InputBase placeholder="Recipients" name="to" onChange={(e) => onValueChange(e)} value={data.to} />
+        <InputBase placeholder="Subject" name="subject" onChange={(e) => onValueChange(e)} value={data.subject} />
       </RecipientWrapper>
-      <TextField multiline rows={20} sx={{ '& .MuiOutlinedInput-notchedOutline': { border: 'none' } }} name="body"   onChange={(e) => onValueChange(e)}
-      value={data.body}/>
+      {/* Body section */}
+      <TextField
+        multiline
+        rows={20}
+        sx={{ '& .MuiOutlinedInput-notchedOutline': { border: 'none' } }}
+        name="body"
+        onChange={(e) => onValueChange(e)}
+        value={data.body}
+      />
+      {/* Footer section */}
       <Footer>
         <SendButton onClick={(e) => sendMail(e)}>Send</SendButton>
         <DeleteOutline onClick={() => setOpenDialog(false)} />
@@ -105,4 +126,5 @@ const ComposeMail = ({ openDialog, setOpenDialog }) => {
   );
 };
 
+// Exporting the ComposeMail component
 export default ComposeMail;

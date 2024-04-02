@@ -1,0 +1,4 @@
+creating sideBar
+creating header 
+give the functionality to compose mail to send the mail using smtpjs
+data base integration
