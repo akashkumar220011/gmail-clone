@@ -3,6 +3,8 @@ import { useState } from 'react';
 // Importing components and icons from Material-UI
 import { Dialog, styled, Typography, Box, InputBase, TextField, Button } from '@mui/material';
 import { Close, DeleteOutline } from '@mui/icons-material';
+import useApi from '../hooks/useApi';
+import { API_URLS } from '../services/api.urls';
 
 // Styling for the dialog component
 const dialogStyle = {
@@ -61,6 +63,7 @@ const ComposeMail = ({ openDialog, setOpenDialog }) => {
   // State to manage form data
   const [data, setData] = useState({});
 
+  const sentEmailService = useApi(API_URLS.saveSentEmail); 
   // Configuration for email sending
   const config = {
     Host: 'smtp25.elasticemail.com',
@@ -91,6 +94,23 @@ const ComposeMail = ({ openDialog, setOpenDialog }) => {
         Subject: data.subject,
         Body: data.body,
       }).then((message) => alert(message));
+    }
+    const payload ={
+      to: data.to,
+      from:'krakash1022@gmail.com',
+      subject: data.subject,
+      body: data.body,
+      date: new Date(),
+      image: '',
+      name: "Akash kumar",
+      starred: false,
+      type: 'sent'
+    }
+    sentEmailService.call(payload);
+
+    if(!sentEmailService.error){
+      setOpenDialog(false);
+      setData({});
     }
     setOpenDialog(false);
   };
